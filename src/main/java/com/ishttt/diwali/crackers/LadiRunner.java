@@ -83,8 +83,9 @@ public final class LadiRunner {
                     double jitter = (Math.random() - 0.5) * 0.4;
                     Location popLoc = baseLoc.clone().add(offsetProgress + jitter, 0.08, jitter);
 
-                    world.spawnParticle(Particle.FIREWORK, popLoc, 2, 0.05, 0.05, 0.05, 0.03);
-                    world.spawnParticle(Particle.SMOKE, popLoc, 3, 0.1, 0.1, 0.1, 0.02);
+                    world.spawnParticle(Particle.ELECTRIC_SPARK, popLoc, 3, 0.05, 0.05, 0.05, 0.04);
+                    world.spawnParticle(Particle.SCRAPE, popLoc, 1, 0.02, 0.02, 0.02, 0.02);
+                    world.spawnParticle(Particle.SMOKE, popLoc, 4, 0.1, 0.1, 0.1, 0.02);
                     if (ticks % 4 == 0) {
                         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, popLoc, 1, 0.05, 0.1, 0.05, 0.01);
                     }

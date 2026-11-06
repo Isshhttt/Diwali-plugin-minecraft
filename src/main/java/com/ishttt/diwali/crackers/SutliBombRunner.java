@@ -34,10 +34,12 @@ public final class SutliBombRunner {
                 }
 
                 if (ticks < totalFuseTicks) {
-                    world.spawnParticle(Particle.SMALL_FLAME, loc.clone().add(0, 0.25, 0), 2, 0.02, 0.02, 0.02, 0.01);
-                    world.spawnParticle(Particle.SMOKE, loc.clone().add(0, 0.3, 0), 1, 0.02, 0.05, 0.02, 0.01);
+                    Location fuseTip = loc.clone().add(0, 0.45, 0);
+                    world.spawnParticle(Particle.SMALL_FLAME, fuseTip, 2, 0.02, 0.02, 0.02, 0.01);
+                    world.spawnParticle(Particle.ELECTRIC_SPARK, fuseTip, 3, 0.03, 0.03, 0.03, 0.04);
+                    world.spawnParticle(Particle.SMOKE, fuseTip, 2, 0.02, 0.05, 0.02, 0.01);
                     if (ticks % 10 == 0) {
-                        ChatUtils.playSound(loc, Sound.BLOCK_FIRE_AMBIENT, 0.6f, 1.8f);
+                        ChatUtils.playSound(loc, Sound.BLOCK_FIRE_AMBIENT, 0.7f, 1.8f);
                     }
                     ticks += 5;
                     return;
@@ -59,8 +61,10 @@ public final class SutliBombRunner {
 
         // Visual shockwave & heavy smoke (NO block destruction)
         world.spawnParticle(Particle.EXPLOSION_EMITTER, loc, 1, 0, 0, 0, 0);
-        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 40, 1.5, 0.8, 1.5, 0.08);
-        world.spawnParticle(Particle.FLAME, loc, 25, 1.2, 0.5, 1.2, 0.1);
+        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 50, 1.8, 1.0, 1.8, 0.08);
+        world.spawnParticle(Particle.FLAME, loc, 30, 1.4, 0.6, 1.4, 0.1);
+        world.spawnParticle(Particle.LAVA, loc, 15, 0.8, 0.5, 0.8, 0.1);
+        world.spawnParticle(Particle.ELECTRIC_SPARK, loc, 30, 1.2, 0.8, 1.2, 0.2);
 
         ChatUtils.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2.0f, 0.7f);
         ChatUtils.playSound(loc, Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 2.0f, 0.8f);

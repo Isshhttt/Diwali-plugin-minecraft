@@ -53,9 +53,9 @@ public class KandilManager {
             ent.setBillboard(Display.Billboard.FIXED);
             ent.setBrightness(new Display.Brightness(15, 15));
             ent.setTransformation(new Transformation(
-                    new Vector3f(0, 0, 0),
+                    new Vector3f(0, 0.45f, 0),
                     new AxisAngle4f(0, 0, 0, 1),
-                    new Vector3f(0.85f, 0.85f, 0.85f),
+                    new Vector3f(1.25f, 1.25f, 1.25f),
                     new AxisAngle4f(0, 0, 0, 1)
             ));
 
@@ -65,8 +65,8 @@ public class KandilManager {
 
         // Spawn physical interaction hitbox
         world.spawn(spawnLoc.clone().add(0, 0.1, 0), Interaction.class, inter -> {
-            inter.setInteractionWidth(0.65f);
-            inter.setInteractionHeight(1.1f);
+            inter.setInteractionWidth(0.85f);
+            inter.setInteractionHeight(1.4f);
             inter.setResponsive(true);
 
             PersistentDataContainer pdc = inter.getPersistentDataContainer();

@@ -31,7 +31,8 @@ public final class AnarRunner {
                 }
 
                 if (fuseTicks < 30) {
-                    world.spawnParticle(Particle.SMALL_FLAME, loc.clone().add(0, 0.3, 0), 2, 0.02, 0.02, 0.02, 0.01);
+                    world.spawnParticle(Particle.SMALL_FLAME, loc.clone().add(0, 0.4, 0), 3, 0.02, 0.02, 0.02, 0.01);
+                    world.spawnParticle(Particle.ELECTRIC_SPARK, loc.clone().add(0, 0.4, 0), 2, 0.03, 0.03, 0.03, 0.04);
                     fuseTicks += 5;
                     return;
                 }
@@ -50,8 +51,10 @@ public final class AnarRunner {
         int durationSeconds = plugin.getConfig().getInt("crackers.anar.fountain-duration-seconds", 14);
         int maxTicks = durationSeconds * 20;
         double maxHeight = plugin.getConfig().getDouble("crackers.anar.height-blocks", 6.5);
-        double dangerRadius = plugin.getConfig().getDouble("crackers.anar.danger-radius-blocks", 2.0);
+        double dangerRadius = plugin.getConfig().getDouble("crackers.anar.danger-radius-blocks", 2.2);
         double damageHearts = plugin.getConfig().getDouble("crackers.anar.damage-per-second", 0.5);
+
+        Location fountainTop = loc.clone().add(0, 0.4, 0);
 
         new BukkitRunnable() {
             int ticks = 0;
@@ -59,14 +62,13 @@ public final class AnarRunner {
             @Override
             public void run() {
                 if (!entity.isValid() || ticks >= maxTicks) {
-                    world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc.clone().add(0, 0.3, 0), 12, 0.2, 0.2, 0.2, 0.05);
-                    ChatUtils.playSound(loc, Sound.BLOCK_FIRE_EXTINGUISH, 0.8f, 1.0f);
+                    world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, fountainTop, 15, 0.2, 0.2, 0.2, 0.05);
+                    ChatUtils.playSound(loc, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
                     entity.remove();
                     cancel();
                     return;
                 }
 
-                // Determine height curve: rises to apex then falls gently
                 double progress = (double) ticks / maxTicks;
                 double currentHeight;
                 if (progress < 0.2) {
@@ -77,37 +79,40 @@ public final class AnarRunner {
                     currentHeight = maxHeight * (1.0 - ((progress - 0.75) / 0.25) * 0.6);
                 }
 
-                // Fountain particles with stage colors
-                int particleCount = 6;
+                // Dense roaring fountain erupting with upward velocity
+                int particleCount = 14;
                 for (int i = 0; i < particleCount; i++) {
-                    double spread = 0.15 + (Math.random() * 0.35);
                     double angle = Math.random() * 2 * Math.PI;
-                    double h = Math.random() * currentHeight;
-                    double px = loc.getX() + Math.cos(angle) * (spread * (h / currentHeight));
-                    double pz = loc.getZ() + Math.sin(angle) * (spread * (h / currentHeight));
-                    Location pLoc = new Location(world, px, loc.getY() + 0.3 + h, pz);
+                    double spread = 0.04 + (Math.random() * 0.12);
+                    double vx = Math.cos(angle) * spread;
+                    double vz = Math.sin(angle) * spread;
+                    double vy = 0.25 + (Math.random() * 0.4) * (currentHeight / 3.0);
 
-                    // Stage 1 (0-30%): Pure Golden
-                    // Stage 2 (30-75%): Transition to Emerald Green & Ruby Red
-                    // Stage 3 (75-100%): Crackling Gold & White
+                    // Stage 1 (0-30%): Pure Golden Iron Filings
+                    // Stage 2 (30-75%): Emerald Green & Ruby Red Fireworks
+                    // Stage 3 (75-100%): White Hot Crackling Finale
                     if (progress >= 0.3 && progress < 0.75) {
-                        if (i % 2 == 0) {
-                            ChatUtils.spawnDust(pLoc, Color.fromRGB(0, 230, 118), 1.2f); // Emerald
-                        } else {
-                            ChatUtils.spawnDust(pLoc, Color.fromRGB(255, 23, 68), 1.2f);  // Ruby
-                        }
+                        Color col = (i % 2 == 0) ? Color.fromRGB(0, 230, 118) : Color.fromRGB(255, 23, 68);
+                        double h = Math.random() * currentHeight;
+                        Location pLoc = fountainTop.clone().add(vx * h * 3, h, vz * h * 3);
+                        ChatUtils.spawnDust(pLoc, col, 1.3f);
+                        world.spawnParticle(Particle.FIREWORK, pLoc, 1, 0.02, 0.05, 0.02, 0.02);
                     } else {
-                        world.spawnParticle(Particle.FIREWORK, pLoc, 1, 0.02, 0.05, 0.02, 0.03);
+                        world.spawnParticle(Particle.ELECTRIC_SPARK, fountainTop, 0, vx, vy, vz, 0.2);
+                        if (i % 3 == 0) {
+                            world.spawnParticle(Particle.SCRAPE, fountainTop, 0, vx, vy, vz, 0.15);
+                        }
                     }
                 }
 
-                // Crackle audio
+                // Popping golden ember stars
                 if (ticks % 3 == 0) {
-                    ChatUtils.playSound(loc, Sound.BLOCK_LAVA_POP, 0.9f, 1.8f);
-                    ChatUtils.playSound(loc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 0.5f, 1.5f);
+                    world.spawnParticle(Particle.LAVA, fountainTop, 2, 0.1, 0.2, 0.1, 0.05);
+                    ChatUtils.playSound(loc, Sound.BLOCK_LAVA_POP, 1.0f, 1.8f);
+                    ChatUtils.playSound(loc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 0.6f, 1.6f);
                 }
 
-                // True fixed damage per second in danger radius
+                // Damage per second in danger radius
                 if (ticks % 20 == 0) {
                     CrackerManager.applyDangerDamage(loc, dangerRadius, damageHearts);
                 }

@@ -3,23 +3,26 @@ package com.ishttt.diwali.crackers;
 import com.ishttt.diwali.DiwaliPlugin;
 import com.ishttt.diwali.utils.ChatUtils;
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class SkyshotRunner {
 
     private static final Color[][] COLOR_PALETTES = {
-            // Golden Willow
-            {Color.fromRGB(255, 215, 0), Color.fromRGB(255, 248, 220), Color.fromRGB(255, 165, 0)},
-            // Emerald Rain
+            // Golden Willow & Saffron
+            {Color.fromRGB(255, 215, 0), Color.fromRGB(255, 179, 0), Color.fromRGB(255, 248, 220)},
+            // Emerald Green & Lime
             {Color.fromRGB(0, 230, 118), Color.fromRGB(76, 175, 80), Color.fromRGB(185, 246, 202)},
-            // Ruby Crimson
+            // Ruby Crimson & Rose
             {Color.fromRGB(255, 23, 68), Color.fromRGB(245, 0, 87), Color.fromRGB(255, 128, 171)},
-            // Royal Festive (Purple, Gold, Cyan)
+            // Royal Festive (Purple, Gold, Electric Cyan)
             {Color.fromRGB(170, 0, 255), Color.fromRGB(255, 215, 0), Color.fromRGB(0, 229, 255)}
     };
 
@@ -30,7 +33,7 @@ public final class SkyshotRunner {
         World world = baseLoc.getWorld();
         if (world == null) return;
 
-        // Fuse 2.0s
+        // Fuse phase: 2.0s
         new BukkitRunnable() {
             int fuseTicks = 0;
 
@@ -42,7 +45,8 @@ public final class SkyshotRunner {
                 }
 
                 if (fuseTicks < 40) {
-                    world.spawnParticle(Particle.SMALL_FLAME, baseLoc.clone().add(0, 0.3, 0), 2, 0.05, 0.05, 0.05, 0.01);
+                    world.spawnParticle(Particle.SMALL_FLAME, baseLoc.clone().add(0, 0.4, 0), 3, 0.05, 0.05, 0.05, 0.02);
+                    world.spawnParticle(Particle.ELECTRIC_SPARK, baseLoc.clone().add(0, 0.4, 0), 2, 0.05, 0.05, 0.05, 0.03);
                     fuseTicks += 5;
                     return;
                 }
@@ -52,7 +56,6 @@ public final class SkyshotRunner {
                     launchCake(plugin, entity, baseLoc);
                 } else {
                     launchSingle(plugin, entity, baseLoc, 0);
-                    // Remove mortar box after single shot
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -81,80 +84,98 @@ public final class SkyshotRunner {
                 launchSingle(plugin, entity, baseLoc, shot);
                 shot++;
             }
-        }.runTaskTimer(plugin, 1L, 22L);
+        }.runTaskTimer(plugin, 1L, 20L);
     }
 
     private static void launchSingle(DiwaliPlugin plugin, Entity entity, Location baseLoc, int paletteIndex) {
         World world = baseLoc.getWorld();
         if (world == null) return;
 
-        double targetAltitude = plugin.getConfig().getDouble("crackers.skyshot.burst-altitude-blocks", 38.0);
-        double burstRadius = plugin.getConfig().getDouble("crackers.skyshot.burst-radius", 6.0);
+        double targetAltitude = plugin.getConfig().getDouble("crackers.skyshot.burst-altitude-blocks", 36.0);
 
-        // Heavy mortar thump audio
-        ChatUtils.playSound(baseLoc, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.8f);
-        ChatUtils.playSound(baseLoc, Sound.ITEM_FIRECHARGE_USE, 1.5f, 0.7f);
-        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, baseLoc.clone().add(0, 0.4, 0), 10, 0.2, 0.2, 0.2, 0.05);
+        // Mortar launch thump
+        ChatUtils.playSound(baseLoc, Sound.ENTITY_GENERIC_EXPLODE, 1.2f, 1.8f);
+        ChatUtils.playSound(baseLoc, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2.0f, 0.8f);
+        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, baseLoc.clone().add(0, 0.5, 0), 15, 0.2, 0.2, 0.2, 0.06);
+        world.spawnParticle(Particle.FLAME, baseLoc.clone().add(0, 0.5, 0), 8, 0.1, 0.3, 0.1, 0.05);
 
-        // Rocket comet flight
+        // Comet flight upward
         new BukkitRunnable() {
             double currentY = baseLoc.getY() + 0.5;
-            final double driftX = (Math.random() - 0.5) * 0.12;
-            final double driftZ = (Math.random() - 0.5) * 0.12;
+            final double driftX = (Math.random() - 0.5) * 0.15;
+            final double driftZ = (Math.random() - 0.5) * 0.15;
             double posX = baseLoc.getX();
             double posZ = baseLoc.getZ();
 
             @Override
             public void run() {
                 if (currentY >= baseLoc.getY() + targetAltitude) {
-                    // Huge Aerial Starburst!
                     Location burstLoc = new Location(world, posX, currentY, posZ);
-                    burstCanopy(world, burstLoc, burstRadius, paletteIndex);
+                    detonateFireworkBurst(world, burstLoc, paletteIndex);
                     cancel();
                     return;
                 }
 
-                currentY += 1.4;
+                currentY += 1.6;
                 posX += driftX;
                 posZ += driftZ;
 
                 Location cometLoc = new Location(world, posX, currentY, posZ);
-                world.spawnParticle(Particle.FLAME, cometLoc, 3, 0.05, 0.05, 0.05, 0.01);
-                world.spawnParticle(Particle.FIREWORK, cometLoc, 1, 0.02, 0.02, 0.02, 0.01);
+                world.spawnParticle(Particle.FLAME, cometLoc, 4, 0.05, 0.05, 0.05, 0.02);
+                world.spawnParticle(Particle.ELECTRIC_SPARK, cometLoc, 2, 0.04, 0.04, 0.04, 0.04);
             }
         }.runTaskTimer(plugin, 1L, 1L);
     }
 
-    private static void burstCanopy(World world, Location center, double radius, int paletteIndex) {
+    private static void detonateFireworkBurst(World world, Location center, int paletteIndex) {
         Color[] palette = COLOR_PALETTES[paletteIndex % COLOR_PALETTES.length];
 
-        ChatUtils.playSound(center, Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST, 3.0f, 0.9f);
-        ChatUtils.playSound(center, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 2.5f, 1.2f);
-        ChatUtils.playSound(center, Sound.ENTITY_GENERIC_EXPLODE, 1.5f, 1.2f);
+        // Flash of light across the night sky
+        world.spawnParticle(Particle.FLASH, center, 1, 0, 0, 0, 0);
 
-        world.spawnParticle(Particle.EXPLOSION, center, 2, 0.5, 0.5, 0.5, 0.0);
+        // Spawn real Minecraft Firework entity and detonate immediately
+        Firework fw = world.spawn(center, Firework.class, f -> {
+            FireworkMeta meta = f.getFireworkMeta();
+            meta.setPower(1);
 
-        // Spherical starburst canopy
-        int points = 80;
-        for (int i = 0; i < points; i++) {
-            double u = Math.random();
-            double v = Math.random();
-            double theta = u * 2.0 * Math.PI;
-            double phi = Math.acos(2.0 * v - 1.0);
-            double r = Math.cbrt(Math.random()) * radius;
+            FireworkEffect.Type type = (paletteIndex % 2 == 0)
+                    ? FireworkEffect.Type.BALL_LARGE
+                    : FireworkEffect.Type.STAR;
 
-            double sinPhi = Math.sin(phi);
-            double x = center.getX() + r * sinPhi * Math.cos(theta);
-            double y = center.getY() + r * Math.cos(phi);
-            double z = center.getZ() + r * sinPhi * Math.sin(theta);
+            FireworkEffect effect1 = FireworkEffect.builder()
+                    .with(type)
+                    .withColor(palette[0], palette[1])
+                    .withFade(palette[2], Color.WHITE)
+                    .flicker(true)
+                    .trail(true)
+                    .build();
 
-            Location starLoc = new Location(world, x, y, z);
-            Color starColor = palette[i % palette.length];
-            ChatUtils.spawnDust(starLoc, starColor, 1.4f);
+            FireworkEffect effect2 = FireworkEffect.builder()
+                    .with(FireworkEffect.Type.BURST)
+                    .withColor(Color.fromRGB(255, 215, 0))
+                    .withFade(Color.fromRGB(255, 255, 255))
+                    .flicker(true)
+                    .trail(true)
+                    .build();
 
-            if (i % 3 == 0) {
-                world.spawnParticle(Particle.FIREWORK, starLoc, 1, 0.02, 0.02, 0.02, 0.02);
-            }
+            meta.addEffects(effect1, effect2);
+            f.setFireworkMeta(meta);
+        });
+
+        fw.detonate();
+
+        // Audio & companion electric spark ring
+        ChatUtils.playSound(center, Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST, 3.5f, 0.9f);
+        ChatUtils.playSound(center, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 3.0f, 1.2f);
+        ChatUtils.playSound(center, Sound.ENTITY_GENERIC_EXPLODE, 2.0f, 1.1f);
+
+        for (int i = 0; i < 35; i++) {
+            double angle = Math.random() * 2 * Math.PI;
+            double speed = 0.3 + (Math.random() * 0.7);
+            double vx = Math.cos(angle) * speed;
+            double vz = Math.sin(angle) * speed;
+            double vy = (Math.random() - 0.5) * speed;
+            world.spawnParticle(Particle.ELECTRIC_SPARK, center, 0, vx, vy, vz, 0.15);
         }
     }
 }

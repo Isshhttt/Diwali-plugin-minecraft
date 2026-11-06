@@ -86,7 +86,7 @@ public class ToranManager {
             ent.setTransformation(new Transformation(
                     new Vector3f(0, 0, 0),
                     new AxisAngle4f(0, 0, 0, 1),
-                    new Vector3f(1.0f, 0.6f, 0.1f),
+                    new Vector3f(1.6f, 0.9f, 0.15f),
                     new AxisAngle4f(0, 0, 0, 1)
             ));
 
@@ -96,8 +96,8 @@ public class ToranManager {
 
         // Spawn physical interaction hitbox so players can punch/break or snip it
         world.spawn(placeLoc.clone().add(0, -0.2, 0), Interaction.class, inter -> {
-            inter.setInteractionWidth(0.9f);
-            inter.setInteractionHeight(0.5f);
+            inter.setInteractionWidth(1.4f);
+            inter.setInteractionHeight(0.7f);
             inter.setResponsive(true);
 
             PersistentDataContainer pdc = inter.getPersistentDataContainer();

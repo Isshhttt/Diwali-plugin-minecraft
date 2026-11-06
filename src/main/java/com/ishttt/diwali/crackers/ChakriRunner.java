@@ -2,7 +2,6 @@ package com.ishttt.diwali.crackers;
 
 import com.ishttt.diwali.DiwaliPlugin;
 import com.ishttt.diwali.utils.ChatUtils;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -31,7 +30,8 @@ public final class ChakriRunner {
                 }
 
                 if (fuseTicks < 30) {
-                    world.spawnParticle(Particle.SMALL_FLAME, loc.clone().add(0, 0.1, 0), 2, 0.02, 0.02, 0.02, 0.01);
+                    world.spawnParticle(Particle.SMALL_FLAME, loc.clone().add(0, 0.15, 0), 2, 0.02, 0.02, 0.02, 0.01);
+                    world.spawnParticle(Particle.ELECTRIC_SPARK, loc.clone().add(0, 0.15, 0), 2, 0.02, 0.02, 0.02, 0.03);
                     fuseTicks += 5;
                     return;
                 }
@@ -61,18 +61,17 @@ public final class ChakriRunner {
             @Override
             public void run() {
                 if (!entity.isValid() || ticks >= maxTicks) {
-                    // Sputter out
-                    world.spawnParticle(Particle.SMOKE, currentLoc, 10, 0.2, 0.1, 0.2, 0.05);
-                    ChatUtils.playSound(currentLoc, Sound.BLOCK_FIRE_EXTINGUISH, 0.8f, 1.2f);
+                    world.spawnParticle(Particle.SMOKE, currentLoc.clone().add(0, 0.1, 0), 12, 0.2, 0.1, 0.2, 0.05);
+                    ChatUtils.playSound(currentLoc, Sound.BLOCK_FIRE_EXTINGUISH, 0.9f, 1.2f);
                     entity.remove();
                     cancel();
                     return;
                 }
 
-                // Random dancing drift across the ground
+                // Random dancing ground drift
                 if (drift && ticks % 4 == 0) {
-                    double dx = (Math.random() - 0.5) * 0.07;
-                    double dz = (Math.random() - 0.5) * 0.07;
+                    double dx = (Math.random() - 0.5) * 0.08;
+                    double dz = (Math.random() - 0.5) * 0.08;
                     Location target = currentLoc.clone().add(dx, 0, dz);
                     if (target.getBlock().isPassable()) {
                         currentLoc = target;
@@ -80,26 +79,33 @@ public final class ChakriRunner {
                     }
                 }
 
-                // Spiral golden spark generation
-                angle += Math.PI / 4;
+                // High-velocity spinning spiral arms of electric sparks and embers
+                angle += Math.PI / 3;
                 for (int arm = 0; arm < 4; arm++) {
                     double armAngle = angle + (arm * (Math.PI / 2));
-                    double r = 0.4 + (Math.random() * 1.8);
+                    double r = 0.3 + (Math.random() * 1.6);
                     double px = currentLoc.getX() + Math.cos(armAngle) * r;
                     double pz = currentLoc.getZ() + Math.sin(armAngle) * r;
-                    Location particleLoc = new Location(world, px, currentLoc.getY() + 0.08, pz);
+                    Location particleLoc = new Location(world, px, currentLoc.getY() + 0.1, pz);
 
-                    world.spawnParticle(Particle.CRIT, particleLoc, 1, 0, 0, 0, 0.05);
-                    world.spawnParticle(Particle.FIREWORK, particleLoc, 1, 0.02, 0.02, 0.02, 0.02);
+                    world.spawnParticle(Particle.ELECTRIC_SPARK, particleLoc, 1, 0.02, 0.02, 0.02, 0.03);
+                    if (arm % 2 == 0) {
+                        world.spawnParticle(Particle.SCRAPE, particleLoc, 1, 0.02, 0.02, 0.02, 0.02);
+                        world.spawnParticle(Particle.SMALL_FLAME, particleLoc, 1, 0.01, 0.01, 0.01, 0.01);
+                    }
                 }
 
-                // Whirring / hiss audio
-                if (ticks % 4 == 0) {
-                    ChatUtils.playSound(currentLoc, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 0.8f, 1.8f);
-                    ChatUtils.playSound(currentLoc, Sound.BLOCK_FIRE_AMBIENT, 0.6f, 1.6f);
+                // Occasional popping lava spark
+                if (ticks % 6 == 0) {
+                    world.spawnParticle(Particle.LAVA, currentLoc.clone().add(0, 0.1, 0), 1, 0.05, 0.05, 0.05, 0.02);
                 }
 
-                // True fixed damage per second within radius
+                // Whirring hiss & crackle audio
+                if (ticks % 3 == 0) {
+                    ChatUtils.playSound(currentLoc, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.0f, 1.9f);
+                    ChatUtils.playSound(currentLoc, Sound.BLOCK_LAVA_POP, 0.7f, 1.9f);
+                }
+
                 if (ticks % 20 == 0) {
                     CrackerManager.applyDangerDamage(currentLoc, dangerRadius, damageHearts);
                 }

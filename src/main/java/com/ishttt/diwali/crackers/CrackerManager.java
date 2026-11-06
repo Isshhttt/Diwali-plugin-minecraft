@@ -60,14 +60,17 @@ public class CrackerManager {
         ItemStack item = plugin.getItemManager().createItem(type, 1);
         String id = UUID.randomUUID().toString();
 
+        float scaleVal = (type == DiwaliItemType.SKYSHOT_CAKE || type == DiwaliItemType.LADI_1000) ? 1.2f : 1.0f;
+        float yOffset = scaleVal * 0.45f;
+
         ItemDisplay display = world.spawn(spawnLoc, ItemDisplay.class, ent -> {
             ent.setItemStack(item);
             ent.setBillboard(Display.Billboard.FIXED);
-            ent.setBrightness(new Display.Brightness(10, 10));
+            ent.setBrightness(new Display.Brightness(12, 12));
             ent.setTransformation(new Transformation(
-                    new Vector3f(0, 0, 0),
+                    new Vector3f(0, yOffset, 0),
                     new AxisAngle4f(0, 0, 0, 1),
-                    new Vector3f(0.5f, 0.5f, 0.5f),
+                    new Vector3f(scaleVal, scaleVal, scaleVal),
                     new AxisAngle4f(0, 0, 0, 1)
             ));
 
@@ -76,10 +79,10 @@ public class CrackerManager {
             pdc.set(crackerTypeKey, PersistentDataType.STRING, type.getId());
         });
 
-        // Spawn physical interaction hitbox so player right-click with Lighter directly hits this entity
+        // Spawn physical interaction hitbox sized to the cracker
         world.spawn(spawnLoc.clone().add(0, 0.05, 0), Interaction.class, inter -> {
-            inter.setInteractionWidth(0.55f);
-            inter.setInteractionHeight(0.55f);
+            inter.setInteractionWidth(0.7f);
+            inter.setInteractionHeight(0.85f);
             inter.setResponsive(true);
 
             PersistentDataContainer pdc = inter.getPersistentDataContainer();

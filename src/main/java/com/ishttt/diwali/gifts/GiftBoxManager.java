@@ -99,9 +99,9 @@ public class GiftBoxManager implements Listener {
             ent.setBillboard(Display.Billboard.FIXED);
             ent.setBrightness(new Display.Brightness(12, 12));
             ent.setTransformation(new Transformation(
-                    new Vector3f(0, 0, 0),
+                    new Vector3f(0, 0.45f, 0),
                     new AxisAngle4f(0, 0, 0, 1),
-                    new Vector3f(0.6f, 0.6f, 0.6f),
+                    new Vector3f(1.0f, 1.0f, 1.0f),
                     new AxisAngle4f(0, 0, 0, 1)
             ));
 
@@ -121,8 +121,8 @@ public class GiftBoxManager implements Listener {
 
         // Spawn physical interaction hitbox
         world.spawn(spawnLoc.clone().add(0, 0.05, 0), org.bukkit.entity.Interaction.class, inter -> {
-            inter.setInteractionWidth(0.7f);
-            inter.setInteractionHeight(0.7f);
+            inter.setInteractionWidth(0.85f);
+            inter.setInteractionHeight(0.85f);
             inter.setResponsive(true);
 
             PersistentDataContainer pdc = inter.getPersistentDataContainer();

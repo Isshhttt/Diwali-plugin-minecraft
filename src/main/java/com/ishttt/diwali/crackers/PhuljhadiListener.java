@@ -78,9 +78,11 @@ public class PhuljhadiListener implements Listener {
             Vector dir = eye.getDirection().normalize().multiply(0.6);
             Location tip = eye.add(dir).add(0, -0.2, 0);
 
-            player.getWorld().spawnParticle(Particle.FIREWORK, tip, 4, 0.08, 0.08, 0.08, 0.02);
-            player.getWorld().spawnParticle(Particle.CRIT, tip, 2, 0.05, 0.05, 0.05, 0.04);
-            ChatUtils.playSound(tip, Sound.BLOCK_LAVA_POP, 0.6f, 1.9f);
+            player.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, tip, 5, 0.08, 0.08, 0.08, 0.05);
+            player.getWorld().spawnParticle(Particle.SCRAPE, tip, 2, 0.05, 0.05, 0.05, 0.03);
+            player.getWorld().spawnParticle(Particle.FIREWORK, tip, 2, 0.05, 0.05, 0.05, 0.02);
+            ChatUtils.playSound(tip, Sound.BLOCK_LAVA_POP, 0.7f, 1.9f);
+            ChatUtils.playSound(tip, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 0.5f, 2.0f);
             return;
         }
 

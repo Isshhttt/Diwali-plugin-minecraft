@@ -97,11 +97,11 @@ public class DiyaManager {
         ItemDisplay display = world.spawn(spawnLoc, ItemDisplay.class, ent -> {
             ent.setItemStack(itemStack);
             ent.setBillboard(Display.Billboard.FIXED);
-            ent.setBrightness(new Display.Brightness(7, 7));
+            ent.setBrightness(new Display.Brightness(10, 10));
             ent.setTransformation(new Transformation(
-                    new Vector3f(0, 0, 0),
+                    new Vector3f(0, 0.35f, 0),
                     new AxisAngle4f(0, 0, 0, 1),
-                    new Vector3f(0.55f, 0.55f, 0.55f),
+                    new Vector3f(0.85f, 0.85f, 0.85f),
                     new AxisAngle4f(0, 0, 0, 1)
             ));
 
@@ -114,8 +114,8 @@ public class DiyaManager {
 
         // Spawn physical interaction hitbox so right-click and left-click work reliably
         world.spawn(spawnLoc.clone().add(0, 0.05, 0), org.bukkit.entity.Interaction.class, inter -> {
-            inter.setInteractionWidth(0.5f);
-            inter.setInteractionHeight(0.35f);
+            inter.setInteractionWidth(0.65f);
+            inter.setInteractionHeight(0.5f);
             inter.setResponsive(true);
 
             PersistentDataContainer pdc = inter.getPersistentDataContainer();

@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "tube": "diwali:item/skyshot_tube",
+    "particle": "diwali:item/skyshot_tube"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
+      "faces": {
+        "all": {
+          "texture": "#tube"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "jamun": "diwali:item/gulab_jamun",
+    "particle": "diwali:item/gulab_jamun"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        6,
+        11
+      ],
+      "faces": {
+        "all": {
+          "texture": "#jamun"
+        }
+      }
+    }
+  ]
+}

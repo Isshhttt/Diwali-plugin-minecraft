@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "kaju": "diwali:item/kaju_katli",
+    "particle": "diwali:item/kaju_katli"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        2,
+        12
+      ],
+      "faces": {
+        "all": {
+          "texture": "#kaju"
+        }
+      }
+    }
+  ]
+}

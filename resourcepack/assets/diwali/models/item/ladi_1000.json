@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "red": "diwali:item/ladi_red",
+    "particle": "diwali:item/ladi_red"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        4
+      ],
+      "to": [
+        15,
+        3,
+        12
+      ],
+      "faces": {
+        "all": {
+          "texture": "#red"
+        }
+      }
+    }
+  ]
+}

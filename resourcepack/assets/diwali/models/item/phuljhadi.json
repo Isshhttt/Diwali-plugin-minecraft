@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "stick": "diwali:item/phuljhadi_stick",
+    "particle": "diwali:item/phuljhadi_stick"
+  },
+  "elements": [
+    {
+      "from": [
+        7.5,
+        0,
+        7.5
+      ],
+      "to": [
+        8.5,
+        8,
+        8.5
+      ],
+      "faces": {
+        "all": {
+          "texture": "#stick"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        8,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "all": {
+          "texture": "#stick"
+        }
+      }
+    }
+  ]
+}

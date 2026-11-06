@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/golden_carrot"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1051
+      },
+      "model": "diwali:item/motichoor_ladoo"
+    }
+  ]
+}

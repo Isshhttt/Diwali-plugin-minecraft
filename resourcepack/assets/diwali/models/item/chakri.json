@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "wheel": "diwali:item/chakri_wheel",
+    "particle": "diwali:item/chakri_wheel"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        2,
+        14
+      ],
+      "faces": {
+        "all": {
+          "texture": "#wheel"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        2,
+        6
+      ],
+      "to": [
+        10,
+        4,
+        10
+      ],
+      "faces": {
+        "all": {
+          "texture": "#wheel"
+        }
+      }
+    }
+  ]
+}

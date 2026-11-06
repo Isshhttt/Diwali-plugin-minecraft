@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/lead"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1010
+      },
+      "model": "diwali:item/jhalar_golden"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1011
+      },
+      "model": "diwali:item/jhalar_rgb"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1012
+      },
+      "model": "diwali:item/jhalar_white"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1013
+      },
+      "model": "diwali:item/jhalar_saffron"
+    }
+  ]
+}

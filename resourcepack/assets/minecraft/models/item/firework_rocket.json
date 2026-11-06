@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/firework_rocket"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1037
+      },
+      "model": "diwali:item/skyrocket"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1038
+      },
+      "model": "diwali:item/skyshot"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1039
+      },
+      "model": "diwali:item/skyshot_cake"
+    }
+  ]
+}

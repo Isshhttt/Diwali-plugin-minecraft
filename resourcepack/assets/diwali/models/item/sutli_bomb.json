@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "jute": "diwali:item/sutli_jute",
+    "wick": "diwali:item/diya_wick",
+    "particle": "diwali:item/sutli_jute"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        8,
+        12
+      ],
+      "faces": {
+        "all": {
+          "texture": "#jute"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        8,
+        7.5
+      ],
+      "to": [
+        8.5,
+        11,
+        8.5
+      ],
+      "faces": {
+        "all": {
+          "texture": "#wick"
+        }
+      }
+    }
+  ]
+}

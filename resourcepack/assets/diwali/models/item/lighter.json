@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "gold": "diwali:item/lighter_gold",
+    "steel": "diwali:item/lighter_steel",
+    "particle": "diwali:item/lighter_gold"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        6
+      ],
+      "to": [
+        11,
+        10,
+        10
+      ],
+      "faces": {
+        "all": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        10,
+        7
+      ],
+      "to": [
+        10,
+        13,
+        9
+      ],
+      "faces": {
+        "all": {
+          "texture": "#steel"
+        }
+      }
+    }
+  ]
+}

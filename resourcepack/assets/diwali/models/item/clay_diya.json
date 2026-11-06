@@ -1,0 +1,146 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "clay": "diwali:item/diya_terracotta",
+    "oil": "diwali:item/diya_oil",
+    "wick": "diwali:item/diya_wick",
+    "flame": "diwali:item/diya_flame",
+    "particle": "diwali:item/diya_terracotta"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        2,
+        12
+      ],
+      "faces": {
+        "down": {
+          "texture": "#clay"
+        },
+        "up": {
+          "texture": "#oil"
+        },
+        "north": {
+          "texture": "#clay"
+        },
+        "south": {
+          "texture": "#clay"
+        },
+        "west": {
+          "texture": "#clay"
+        },
+        "east": {
+          "texture": "#clay"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        2,
+        3
+      ],
+      "to": [
+        13,
+        3,
+        4
+      ],
+      "faces": {
+        "all": {
+          "texture": "#clay"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        2,
+        12
+      ],
+      "to": [
+        13,
+        3,
+        13
+      ],
+      "faces": {
+        "all": {
+          "texture": "#clay"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        2,
+        4
+      ],
+      "to": [
+        4,
+        3,
+        12
+      ],
+      "faces": {
+        "all": {
+          "texture": "#clay"
+        }
+      }
+    },
+    {
+      "from": [
+        12,
+        2,
+        4
+      ],
+      "to": [
+        13,
+        3,
+        12
+      ],
+      "faces": {
+        "all": {
+          "texture": "#clay"
+        }
+      }
+    },
+    {
+      "from": [
+        7.5,
+        2,
+        7.5
+      ],
+      "to": [
+        8.5,
+        4,
+        8.5
+      ],
+      "faces": {
+        "all": {
+          "texture": "#wick"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        4,
+        7
+      ],
+      "to": [
+        9,
+        7,
+        9
+      ],
+      "faces": {
+        "all": {
+          "texture": "#flame"
+        }
+      }
+    }
+  ]
+}

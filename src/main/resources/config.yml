@@ -1,0 +1,126 @@
+# ==============================================================================
+#                      🪔 DIWALI FESTIVAL PLUGIN CONFIGURATION 🪔
+# ==============================================================================
+
+# General settings
+settings:
+  # Check for updates or announce festival greeting on join
+  announce-on-join: true
+  # Auto-save interval in minutes for placed Diyas, Jhalars, and Gift boxes
+  auto-save-interval: 5
+
+# Jhalar (Hanging Wire Fairy Lights) settings
+jhalar:
+  # Maximum span distance between Point A and Point B in blocks
+  max-span-distance: 20
+  # Light level emitted by the wire bulbs (0 to 15)
+  light-level: 15
+  # Seconds interval between animation cycle for RGB/twinkling
+  animation-interval-ticks: 10
+
+# Diya & Lamp settings
+diyas:
+  # Duration in minutes that 1 application of Ghee / Oil will keep the Diya burning (120 min = 2 hours)
+  burn-duration-minutes: 120
+  # Light level emitted by lit Diyas (0 to 15)
+  light-level: 15
+  # Sound volume & pitch
+  sound-volume: 0.8
+
+# Firecrackers (Patakhe) settings
+crackers:
+  # Whether crackers damage surrounding blocks (False = 100% grief-safe)
+  enable-block-damage: false
+
+  # Chakri (Ground Spinner)
+  chakri:
+    spin-duration-seconds: 11
+    # Fixed damage (in hearts, where 0.5 = 1.0 HP) per second in danger radius
+    damage-per-second: 0.5
+    danger-radius-blocks: 2.5
+    # Slight wandering/dancing on ground
+    enable-drift: true
+
+  # Anar (Flower Pot)
+  anar:
+    fountain-duration-seconds: 14
+    height-blocks: 6.5
+    damage-per-second: 0.5
+    danger-radius-blocks: 2.0
+
+  # Phuljhadi (Handheld Sparkler)
+  phuljhadi:
+    # Random ignition charge time range in seconds when holding near flame
+    charge-min-seconds: 15
+    charge-max-seconds: 20
+    # Burn duration once lit before being consumed
+    burn-duration-seconds: 50
+
+  # Ladi (String Garland)
+  ladi-100:
+    duration-seconds: 6
+    damage-per-second: 0.5
+    danger-radius-blocks: 2.0
+  ladi-1000:
+    duration-seconds: 13
+    damage-per-second: 0.5
+    danger-radius-blocks: 2.5
+
+  # Sutli Bomb
+  sutli-bomb:
+    fuse-seconds: 4
+    # Fixed true damage in hearts (7 hearts = 14 HP) to players in blast radius
+    blast-damage-hearts: 7.0
+    blast-radius-blocks: 4.5
+    # Burnt effect duration in seconds
+    burnt-effect-duration-seconds: 5
+
+  # Skyrocket (Whistling bottle rocket)
+  skyrocket:
+    flight-height-blocks: 30
+    whistle-pitch: 1.8
+
+  # Skyshot (Aerial Shells & Cakes)
+  skyshot:
+    burst-altitude-blocks: 38
+    burst-radius: 6.0
+
+# Sweets (Mithai) Potion Buffs (Duration in seconds)
+sweets:
+  kaju-katli:
+    haste-duration: 180
+    speed-duration: 180
+  motichoor-ladoo:
+    absorption-duration: 180
+    saturation-duration: 180
+  gulab-jamun:
+    regeneration-duration: 180
+    glowing-duration: 180
+
+# Shop Prices (in Emeralds)
+shop:
+  currency-item: "EMERALD"
+  prices:
+    lighter: 2
+    ghee: 1
+    clay-diya: 1
+    akash-kandil: 3
+    sky-lantern: 2
+    jhalar-golden: 4
+    jhalar-rgb: 5
+    jhalar-white: 4
+    jhalar-saffron: 4
+    chakri: 2
+    anar: 3
+    phuljhadi: 2
+    ladi-100: 2
+    ladi-1000: 6
+    sutli-bomb: 4
+    skyrocket: 3
+    skyshot: 5
+    skyshot-cake: 12
+    marigold-toran: 2
+    kaju-katli: 2
+    motichoor-ladoo: 2
+    gulab-jamun: 2
+    diwali-gift-box: 3

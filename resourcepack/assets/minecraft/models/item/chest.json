@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/chest"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1060
+      },
+      "model": "diwali:item/diwali_gift_box"
+    }
+  ]
+}

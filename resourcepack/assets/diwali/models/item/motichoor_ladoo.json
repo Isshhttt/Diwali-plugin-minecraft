@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "motichoor": "diwali:item/motichoor",
+    "particle": "diwali:item/motichoor"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        6,
+        11
+      ],
+      "faces": {
+        "all": {
+          "texture": "#motichoor"
+        }
+      }
+    }
+  ]
+}

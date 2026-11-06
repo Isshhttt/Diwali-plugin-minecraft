@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "wire": "diwali:item/jhalar_wire",
+    "bulb": "diwali:item/bulb_saffron",
+    "particle": "diwali:item/bulb_saffron"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        12,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "all": {
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        4,
+        5
+      ],
+      "to": [
+        11,
+        12,
+        11
+      ],
+      "faces": {
+        "all": {
+          "texture": "#bulb"
+        }
+      }
+    }
+  ]
+}

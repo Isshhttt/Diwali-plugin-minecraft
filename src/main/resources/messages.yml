@@ -1,0 +1,51 @@
+# ==============================================================================
+#                    🪔 DIWALI FESTIVAL MESSAGES & LOCALIZATION 🪔
+# ==============================================================================
+
+prefix: "&6&l[🪔 Diwali]&r "
+
+general:
+  no-permission: "&cYou do not have permission to use this command."
+  player-only: "&cOnly players can execute this command."
+  reloaded: "&aDiwali plugin configuration, items, and recipes reloaded successfully!"
+  join-greeting:
+    - "&6&m--------------------------------------------------"
+    - "       &e&l✨ HAPPY DIWALI & SHUBH DEEPAVALI ✨"
+    - " &fMay the festival of lights bring prosperity, health,"
+    - "       &fand endless joy to you and your home! 🪔"
+    - "   &7Use &e/diwali shop &7to discover festive crackers & gifts!"
+    - "&6&m--------------------------------------------------"
+
+jhalar:
+  point-a-set: "&aPoint A set at &e{x}, {y}, {z}&a. Now right-click Point B to hang the Jhalar light!"
+  hung-success: "&a✨ Jhalar wire lights hung gracefully between both points!"
+  too-far: "&cPoints are too far apart! Maximum span distance is {max} blocks."
+  cancelled: "&eJhalar placement cancelled."
+  snipped: "&6You snipped the Jhalar wire using shears."
+
+diyas:
+  placed: "&eYou placed a Diya. Right-click with &6Desi Ghee &eto fuel it!"
+  fueled: "&6🪔 Ghee added! The Diya is now fueled for 2 hours. Ignite it with your Lighter!"
+  needs-fuel: "&cThis Diya is out of fuel! Add &6Desi Ghee &cfirst to light it."
+  already-fueled: "&eThis Diya is already filled with ghee!"
+  lit: "&6✨ You lit the Diya! It burns brightly with a warm golden flame."
+  extinguished: "&7The Diya has gone out."
+
+crackers:
+  ignited: "&cYou lit the {cracker}! Step back!"
+  phuljhadi-charging: "&eIgniting Phuljhadi... &7[{bar}&7] &6{percent}%"
+  phuljhadi-lit: "&6✨ Your Phuljhadi is sparking dazzling light!"
+  phuljhadi-burnt: "&7Your Phuljhadi has burnt out."
+  burnt-status: "&8&l[&4&lBURNT&8&l] &cYou were caught in the blast and suffered severe burns!"
+
+gifts:
+  placed: "&aYou placed a Diwali Gift Box! Right-click to pack a gift."
+  select-recipient: "&6Select the lucky player you want to send this gift to:"
+  sealed: "&a🎁 Gift sealed for &e{recipient}&a! Break the box to pick it up and deliver it."
+  unwrapped: "&e&l✨ WOW! &aYou unwrapped a Diwali Gift from &e{sender}&a!"
+  not-yours: "&cThis gift box is locked for &e{recipient}&c!"
+
+shop:
+  opened: "&6Opening Diwali Festival Shop..."
+  bought: "&aYou purchased &e{item} &afor &2{price} Emeralds&a!"
+  not-enough-emeralds: "&cYou need &2{price} Emeralds &cto purchase this item!"

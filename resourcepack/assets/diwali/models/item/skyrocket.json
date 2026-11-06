@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "rocket": "diwali:item/rocket_body",
+    "stick": "diwali:item/phuljhadi_stick",
+    "particle": "diwali:item/rocket_body"
+  },
+  "elements": [
+    {
+      "from": [
+        7.5,
+        0,
+        7.5
+      ],
+      "to": [
+        8.5,
+        9,
+        8.5
+      ],
+      "faces": {
+        "all": {
+          "texture": "#stick"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        9,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "faces": {
+        "all": {
+          "texture": "#rocket"
+        }
+      }
+    }
+  ]
+}

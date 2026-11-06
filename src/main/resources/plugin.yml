@@ -1,0 +1,24 @@
+name: Diwali
+version: '${version}'
+main: com.ishttt.diwali.DiwaliPlugin
+api-version: '1.21'
+author: ishttt
+description: Diwali Festival Plugin for Minecraft Paper 1.21.x with Diyas, Jhalar lights, Crackers, Sweets and Gift Boxes.
+
+commands:
+  diwali:
+    description: Main command for Diwali plugin
+    aliases: [deepavali, festival]
+    permission: diwali.use
+    usage: /diwali <shop|give|reload>
+
+permissions:
+  diwali.use:
+    description: Allows using basic Diwali commands
+    default: true
+  diwali.shop:
+    description: Allows opening the Diwali festival shop
+    default: true
+  diwali.admin:
+    description: Allows access to administrative Diwali commands (give, reload)
+    default: op

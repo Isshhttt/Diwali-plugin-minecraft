@@ -52,7 +52,22 @@
         4
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#clay"
+        },
+        "up": {
+          "texture": "#clay"
+        },
+        "north": {
+          "texture": "#clay"
+        },
+        "south": {
+          "texture": "#clay"
+        },
+        "west": {
+          "texture": "#clay"
+        },
+        "east": {
           "texture": "#clay"
         }
       }
@@ -69,7 +84,22 @@
         13
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#clay"
+        },
+        "up": {
+          "texture": "#clay"
+        },
+        "north": {
+          "texture": "#clay"
+        },
+        "south": {
+          "texture": "#clay"
+        },
+        "west": {
+          "texture": "#clay"
+        },
+        "east": {
           "texture": "#clay"
         }
       }
@@ -86,7 +116,22 @@
         12
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#clay"
+        },
+        "up": {
+          "texture": "#clay"
+        },
+        "north": {
+          "texture": "#clay"
+        },
+        "south": {
+          "texture": "#clay"
+        },
+        "west": {
+          "texture": "#clay"
+        },
+        "east": {
           "texture": "#clay"
         }
       }
@@ -103,7 +148,22 @@
         12
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#clay"
+        },
+        "up": {
+          "texture": "#clay"
+        },
+        "north": {
+          "texture": "#clay"
+        },
+        "south": {
+          "texture": "#clay"
+        },
+        "west": {
+          "texture": "#clay"
+        },
+        "east": {
           "texture": "#clay"
         }
       }
@@ -120,7 +180,22 @@
         8.5
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#wick"
+        },
+        "up": {
+          "texture": "#wick"
+        },
+        "north": {
+          "texture": "#wick"
+        },
+        "south": {
+          "texture": "#wick"
+        },
+        "west": {
+          "texture": "#wick"
+        },
+        "east": {
           "texture": "#wick"
         }
       }
@@ -137,7 +212,22 @@
         9
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#flame"
+        },
+        "up": {
+          "texture": "#flame"
+        },
+        "north": {
+          "texture": "#flame"
+        },
+        "south": {
+          "texture": "#flame"
+        },
+        "west": {
+          "texture": "#flame"
+        },
+        "east": {
           "texture": "#flame"
         }
       }

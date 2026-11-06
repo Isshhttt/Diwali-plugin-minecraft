@@ -17,7 +17,22 @@
         14
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#tube"
+        },
+        "up": {
+          "texture": "#tube"
+        },
+        "north": {
+          "texture": "#tube"
+        },
+        "south": {
+          "texture": "#tube"
+        },
+        "west": {
+          "texture": "#tube"
+        },
+        "east": {
           "texture": "#tube"
         }
       }

@@ -17,7 +17,22 @@
         12
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#kaju"
+        },
+        "up": {
+          "texture": "#kaju"
+        },
+        "north": {
+          "texture": "#kaju"
+        },
+        "south": {
+          "texture": "#kaju"
+        },
+        "west": {
+          "texture": "#kaju"
+        },
+        "east": {
           "texture": "#kaju"
         }
       }

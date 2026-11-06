@@ -17,7 +17,22 @@
         11
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#jamun"
+        },
+        "up": {
+          "texture": "#jamun"
+        },
+        "north": {
+          "texture": "#jamun"
+        },
+        "south": {
+          "texture": "#jamun"
+        },
+        "west": {
+          "texture": "#jamun"
+        },
+        "east": {
           "texture": "#jamun"
         }
       }

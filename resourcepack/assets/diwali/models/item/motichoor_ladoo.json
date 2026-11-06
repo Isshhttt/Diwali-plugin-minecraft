@@ -17,7 +17,22 @@
         11
       ],
       "faces": {
-        "all": {
+        "down": {
+          "texture": "#motichoor"
+        },
+        "up": {
+          "texture": "#motichoor"
+        },
+        "north": {
+          "texture": "#motichoor"
+        },
+        "south": {
+          "texture": "#motichoor"
+        },
+        "west": {
+          "texture": "#motichoor"
+        },
+        "east": {
           "texture": "#motichoor"
         }
       }

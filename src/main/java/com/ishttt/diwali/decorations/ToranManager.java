@@ -83,6 +83,7 @@ public class ToranManager {
             ent.setItemStack(item);
             ent.setBillboard(Display.Billboard.FIXED);
             ent.setBrightness(new Display.Brightness(12, 12));
+            ent.setViewRange(0.7f);
             ent.setTransformation(new Transformation(
                     new Vector3f(0, 0, 0),
                     new AxisAngle4f(0, 0, 0, 1),

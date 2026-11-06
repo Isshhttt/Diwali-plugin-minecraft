@@ -324,14 +324,13 @@ public class DiyaManager {
                 for (DiyaData diya : activeDiyas.values()) {
                     if (diya.isLit) {
                         World world = diya.location.getWorld();
-                        if (world == null) continue;
-                        Location flameLoc = diya.location.clone().add(0, 0.22, 0);
+                        if (world == null || !world.isChunkLoaded(diya.location.getBlockX() >> 4, diya.location.getBlockZ() >> 4)) continue;
+                        Location flameLoc = diya.location.clone().add(0, 0.4, 0);
                         world.spawnParticle(Particle.SMALL_FLAME, flameLoc, 1, 0.02, 0.02, 0.02, 0.005);
-                        world.spawnParticle(Particle.SMOKE, flameLoc, 1, 0.02, 0.04, 0.02, 0.002);
                     }
                 }
             }
-        }.runTaskTimer(plugin, 5L, 5L);
+        }.runTaskTimer(plugin, 10L, 10L);
 
         // Fuel expiration check loop (every 30 seconds)
         fuelCheckTask = new BukkitRunnable() {

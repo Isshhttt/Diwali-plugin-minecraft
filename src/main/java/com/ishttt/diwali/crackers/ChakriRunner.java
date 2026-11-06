@@ -110,8 +110,8 @@ public final class ChakriRunner {
                     CrackerManager.applyDangerDamage(currentLoc, dangerRadius, damageHearts);
                 }
 
-                ticks += 2;
+                ticks += 3;
             }
-        }.runTaskTimer(plugin, 1L, 2L);
+        }.runTaskTimer(plugin, 1L, 3L);
     }
 }

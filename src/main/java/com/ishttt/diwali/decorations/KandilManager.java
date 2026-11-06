@@ -52,6 +52,7 @@ public class KandilManager {
             ent.setItemStack(item);
             ent.setBillboard(Display.Billboard.FIXED);
             ent.setBrightness(new Display.Brightness(15, 15));
+            ent.setViewRange(0.7f);
             ent.setTransformation(new Transformation(
                     new Vector3f(0, 0.45f, 0),
                     new AxisAngle4f(0, 0, 0, 1),

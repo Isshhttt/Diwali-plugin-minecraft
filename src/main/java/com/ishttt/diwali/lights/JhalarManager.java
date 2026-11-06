@@ -123,7 +123,8 @@ public class JhalarManager {
         if (world == null) return;
 
         double distance = a.distance(b);
-        int steps = Math.max(3, (int) Math.round(distance * 1.5)); // Bulb every ~0.66 blocks
+        // Optimized spacing: 1 bulb every ~1.2 blocks (prevents entity spam while maintaining realistic festival spacing)
+        int steps = Math.max(3, (int) Math.round(distance * 0.85));
         // Proportional catenary sag curve so the hanging drape is clearly visible at any span length
         double sagFactor = Math.max(0.7, Math.min(14.0, 0.4 + (distance * 0.12)));
 
@@ -146,6 +147,7 @@ public class JhalarManager {
                 ent.setItemStack(bulbItem);
                 ent.setBillboard(Display.Billboard.FIXED);
                 ent.setBrightness(new Display.Brightness(15, 15));
+                ent.setViewRange(0.6f); // Client optimization: cull distant bulbs beyond 45 blocks
                 ent.setTransformation(new Transformation(
                         new Vector3f(0, 0, 0),
                         new AxisAngle4f(0, 0, 0, 1),
@@ -160,11 +162,11 @@ public class JhalarManager {
 
             entityIds.add(display.getUniqueId());
 
-            // Add interaction hitbox every 2 nodes so shears can snip the bulb anywhere along the wire
-            if (i % 2 == 0 || i == steps) {
+            // Lightweight interaction hitboxes (only placed at ends, center, and every 6 nodes)
+            if (i == 0 || i == steps || i == steps / 2 || i % 6 == 0) {
                 world.spawn(nodeLoc, org.bukkit.entity.Interaction.class, inter -> {
-                    inter.setInteractionWidth(0.75f);
-                    inter.setInteractionHeight(0.6f);
+                    inter.setInteractionWidth(1.2f);
+                    inter.setInteractionHeight(0.9f);
                     inter.setResponsive(true);
 
                     PersistentDataContainer pdc = inter.getPersistentDataContainer();
@@ -174,11 +176,11 @@ public class JhalarManager {
                 });
             }
 
-            // Place real Light block every 4 nodes if air
-            if (i % 4 == 0) {
+            // Light block placed every 8 nodes (Level 15 light radiates 15 blocks, perfectly covering the area with 75% fewer block updates)
+            if (i == 0 || i == steps || i % 8 == 0) {
                 Block block = nodeLoc.getBlock();
                 if (block.getType() == Material.AIR) {
-                    block.setType(Material.LIGHT);
+                    block.setType(Material.LIGHT, false);
                     if (block.getBlockData() instanceof Light lightData) {
                         lightData.setLevel(15);
                         block.setBlockData(lightData, false);

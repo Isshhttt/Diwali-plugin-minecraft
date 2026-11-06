@@ -117,8 +117,8 @@ public final class AnarRunner {
                     CrackerManager.applyDangerDamage(loc, dangerRadius, damageHearts);
                 }
 
-                ticks += 2;
+                ticks += 3;
             }
-        }.runTaskTimer(plugin, 1L, 2L);
+        }.runTaskTimer(plugin, 1L, 3L);
     }
 }

@@ -79,9 +79,9 @@ public class JhalarManager {
             }
 
             double distance = pointA.distance(pointB);
-            int maxDistance = plugin.getConfig().getInt("jhalar.max-span-distance", 20);
+            int maxDistance = plugin.getConfig().getInt("jhalar.max-span-distance", 256);
 
-            if (distance > maxDistance) {
+            if (maxDistance > 0 && distance > maxDistance) {
                 String msg = plugin.getConfigManager().getMessage("jhalar.too-far")
                         .replace("{max}", String.valueOf(maxDistance));
                 player.sendMessage(msg);
@@ -123,8 +123,9 @@ public class JhalarManager {
         if (world == null) return;
 
         double distance = a.distance(b);
-        int steps = Math.max(3, (int) (distance * 2.0)); // Node every ~0.5 blocks
-        double sagFactor = Math.min(1.5, distance * 0.05); // Natural gravity sag
+        int steps = Math.max(3, (int) Math.round(distance * 1.5)); // Bulb every ~0.66 blocks
+        // Proportional catenary sag curve so the hanging drape is clearly visible at any span length
+        double sagFactor = Math.max(0.7, Math.min(14.0, 0.4 + (distance * 0.12)));
 
         List<UUID> entityIds = new ArrayList<>();
         List<Location> lightLocs = new ArrayList<>();
@@ -148,7 +149,7 @@ public class JhalarManager {
                 ent.setTransformation(new Transformation(
                         new Vector3f(0, 0, 0),
                         new AxisAngle4f(0, 0, 0, 1),
-                        new Vector3f(0.35f, 0.35f, 0.35f),
+                        new Vector3f(0.55f, 0.55f, 0.55f),
                         new AxisAngle4f(0, 0, 0, 1)
                 ));
 
@@ -159,20 +160,22 @@ public class JhalarManager {
 
             entityIds.add(display.getUniqueId());
 
-            // Add interaction entity so Shears can snip the bulb
-            world.spawn(nodeLoc, org.bukkit.entity.Interaction.class, inter -> {
-                inter.setInteractionWidth(0.4f);
-                inter.setInteractionHeight(0.4f);
-                inter.setResponsive(true);
+            // Add interaction hitbox every 2 nodes so shears can snip the bulb anywhere along the wire
+            if (i % 2 == 0 || i == steps) {
+                world.spawn(nodeLoc, org.bukkit.entity.Interaction.class, inter -> {
+                    inter.setInteractionWidth(0.75f);
+                    inter.setInteractionHeight(0.6f);
+                    inter.setResponsive(true);
 
-                PersistentDataContainer pdc = inter.getPersistentDataContainer();
-                pdc.set(jhalarIdKey, PersistentDataType.STRING, wireId);
-                pdc.set(jhalarTypeKey, PersistentDataType.STRING, type.getId());
-                entityIds.add(inter.getUniqueId());
-            });
+                    PersistentDataContainer pdc = inter.getPersistentDataContainer();
+                    pdc.set(jhalarIdKey, PersistentDataType.STRING, wireId);
+                    pdc.set(jhalarTypeKey, PersistentDataType.STRING, type.getId());
+                    entityIds.add(inter.getUniqueId());
+                });
+            }
 
-            // Place real Light block every 3 nodes if air
-            if (i % 3 == 0) {
+            // Place real Light block every 4 nodes if air
+            if (i % 4 == 0) {
                 Block block = nodeLoc.getBlock();
                 if (block.getType() == Material.AIR) {
                     block.setType(Material.LIGHT);

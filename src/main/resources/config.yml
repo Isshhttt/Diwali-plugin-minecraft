@@ -11,8 +11,8 @@ settings:
 
 # Jhalar (Hanging Wire Fairy Lights) settings
 jhalar:
-  # Maximum span distance between Point A and Point B in blocks
-  max-span-distance: 20
+  # Maximum span distance between Point A and Point B in blocks (-1 for unlimited)
+  max-span-distance: 256
   # Light level emitted by the wire bulbs (0 to 15)
   light-level: 15
   # Seconds interval between animation cycle for RGB/twinkling

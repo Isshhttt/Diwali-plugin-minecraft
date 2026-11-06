@@ -1,0 +1,34 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/firework_rocket"
+    },
+    "entries": [
+      {
+        "threshold": 1037.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "diwali:item/skyrocket"
+        }
+      },
+      {
+        "threshold": 1038.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "diwali:item/skyshot"
+        }
+      },
+      {
+        "threshold": 1039.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "diwali:item/skyshot_cake"
+        }
+      }
+    ]
+  }
+}

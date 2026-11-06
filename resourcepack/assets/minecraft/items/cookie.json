@@ -1,0 +1,20 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/cookie"
+    },
+    "entries": [
+      {
+        "threshold": 1050.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "diwali:item/kaju_katli"
+        }
+      }
+    ]
+  }
+}

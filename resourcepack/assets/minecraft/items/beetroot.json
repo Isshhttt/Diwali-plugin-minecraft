@@ -1,0 +1,20 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/beetroot"
+    },
+    "entries": [
+      {
+        "threshold": 1052.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "diwali:item/gulab_jamun"
+        }
+      }
+    ]
+  }
+}

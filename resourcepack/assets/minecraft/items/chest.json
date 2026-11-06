@@ -1,0 +1,20 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/chest"
+    },
+    "entries": [
+      {
+        "threshold": 1060.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "diwali:item/diwali_gift_box"
+        }
+      }
+    ]
+  }
+}

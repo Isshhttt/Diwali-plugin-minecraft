@@ -63,6 +63,10 @@ public class ItemManager {
         if (meta != null) {
             meta.setDisplayName(ChatUtils.color(type.getDisplayName()));
             meta.setCustomModelData(type.getCustomModelData());
+            try {
+                java.lang.reflect.Method m = meta.getClass().getMethod("setItemModel", org.bukkit.NamespacedKey.class);
+                m.invoke(meta, new org.bukkit.NamespacedKey("diwali", type.getId().replace("-", "_")));
+            } catch (Throwable ignored) {}
 
             List<String> coloredLore = new ArrayList<>();
             for (String line : type.getLore()) {

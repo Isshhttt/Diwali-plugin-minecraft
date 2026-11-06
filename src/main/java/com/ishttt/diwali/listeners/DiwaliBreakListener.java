@@ -1,8 +1,10 @@
 package com.ishttt.diwali.listeners;
 
 import com.ishttt.diwali.DiwaliPlugin;
+import com.ishttt.diwali.items.DiwaliItemType;
 import com.ishttt.diwali.utils.ChatUtils;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
@@ -65,6 +67,20 @@ public class DiwaliBreakListener implements Listener {
                 // If not sealed yet, break and drop
                 plugin.getGiftBoxManager().handleBreak(target, player);
             }
+            return;
+        }
+
+        // 4. Firecrackers / Bombs (Left-click to break & pick up)
+        if (pdc.has(plugin.getCrackerManager().getCrackerTypeKey(), PersistentDataType.STRING)) {
+            event.setCancelled(true);
+            String typeId = pdc.get(plugin.getCrackerManager().getCrackerTypeKey(), PersistentDataType.STRING);
+            DiwaliItemType crackerType = DiwaliItemType.fromId(typeId);
+            if (crackerType != null) {
+                target.getWorld().dropItemNaturally(target.getLocation(), plugin.getItemManager().createItem(crackerType, 1));
+                target.getWorld().playSound(target.getLocation(), Sound.BLOCK_STONE_BREAK, 1.0f, 1.0f);
+                player.sendMessage(ChatUtils.color("&eCollected &6" + crackerType.getDisplayName() + "&e!"));
+            }
+            target.remove();
             return;
         }
     }

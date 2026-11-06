@@ -93,6 +93,7 @@ public class GiftBoxManager implements Listener {
         final String finalSender = sealedSender;
         final String finalContents = sealedContents;
 
+        String giftId = UUID.randomUUID().toString();
         ItemDisplay display = world.spawn(spawnLoc, ItemDisplay.class, ent -> {
             ent.setItemStack(displayItem);
             ent.setBillboard(Display.Billboard.FIXED);
@@ -105,7 +106,7 @@ public class GiftBoxManager implements Listener {
             ));
 
             PersistentDataContainer pdc = ent.getPersistentDataContainer();
-            pdc.set(giftIdKey, PersistentDataType.STRING, UUID.randomUUID().toString());
+            pdc.set(giftIdKey, PersistentDataType.STRING, giftId);
 
             if (finalRecipient != null) {
                 pdc.set(recipientKey, PersistentDataType.STRING, finalRecipient);
@@ -116,6 +117,19 @@ public class GiftBoxManager implements Listener {
             if (finalContents != null) {
                 pdc.set(contentsKey, PersistentDataType.STRING, finalContents);
             }
+        });
+
+        // Spawn physical interaction hitbox
+        world.spawn(spawnLoc.clone().add(0, 0.05, 0), org.bukkit.entity.Interaction.class, inter -> {
+            inter.setInteractionWidth(0.7f);
+            inter.setInteractionHeight(0.7f);
+            inter.setResponsive(true);
+
+            PersistentDataContainer pdc = inter.getPersistentDataContainer();
+            pdc.set(giftIdKey, PersistentDataType.STRING, giftId);
+            if (finalRecipient != null) pdc.set(recipientKey, PersistentDataType.STRING, finalRecipient);
+            if (finalSender != null) pdc.set(senderKey, PersistentDataType.STRING, finalSender);
+            if (finalContents != null) pdc.set(contentsKey, PersistentDataType.STRING, finalContents);
         });
 
         if (player.getGameMode() != org.bukkit.GameMode.CREATIVE) {
@@ -285,7 +299,7 @@ public class GiftBoxManager implements Listener {
         PersistentDataContainer pdc = entity.getPersistentDataContainer();
         if (!pdc.has(giftIdKey, PersistentDataType.STRING)) return false;
 
-        Location dropLoc = entity.getLocation();
+        Location loc = entity.getLocation();
         ItemStack dropItem = plugin.getItemManager().createItem(DiwaliItemType.DIWALI_GIFT_BOX, 1);
 
         if (pdc.has(recipientKey, PersistentDataType.STRING)) {
@@ -314,10 +328,19 @@ public class GiftBoxManager implements Listener {
             }
         }
 
+        String giftId = pdc.get(giftIdKey, PersistentDataType.STRING);
+        if (loc.getWorld() != null && giftId != null) {
+            for (Entity nearby : loc.getWorld().getNearbyEntities(loc, 1.5, 1.5, 1.5)) {
+                PersistentDataContainer npdc = nearby.getPersistentDataContainer();
+                if (giftId.equals(npdc.get(giftIdKey, PersistentDataType.STRING))) {
+                    nearby.remove();
+                }
+            }
+        }
         entity.remove();
-        if (dropLoc.getWorld() != null) {
-            dropLoc.getWorld().dropItemNaturally(dropLoc, dropItem);
-            ChatUtils.playSound(dropLoc, Sound.BLOCK_CHEST_CLOSE, 1.0f, 1.2f);
+        if (loc.getWorld() != null) {
+            loc.getWorld().dropItemNaturally(loc, dropItem);
+            ChatUtils.playSound(loc, Sound.BLOCK_CHEST_CLOSE, 1.0f, 1.2f);
         }
         return true;
     }
@@ -367,6 +390,15 @@ public class GiftBoxManager implements Listener {
                 .replace("{sender}", sender != null ? sender : "A Friend");
         player.sendMessage(msg);
 
+        String giftId = pdc.get(giftIdKey, PersistentDataType.STRING);
+        if (loc.getWorld() != null && giftId != null) {
+            for (Entity nearby : loc.getWorld().getNearbyEntities(loc, 1.5, 1.5, 1.5)) {
+                PersistentDataContainer npdc = nearby.getPersistentDataContainer();
+                if (giftId.equals(npdc.get(giftIdKey, PersistentDataType.STRING))) {
+                    nearby.remove();
+                }
+            }
+        }
         entity.remove();
         return true;
     }

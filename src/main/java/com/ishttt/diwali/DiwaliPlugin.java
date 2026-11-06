@@ -4,6 +4,8 @@ import com.ishttt.diwali.commands.DiwaliCommand;
 import com.ishttt.diwali.config.ConfigManager;
 import com.ishttt.diwali.crackers.CrackerManager;
 import com.ishttt.diwali.crackers.PhuljhadiListener;
+import com.ishttt.diwali.decorations.KandilManager;
+import com.ishttt.diwali.decorations.ToranManager;
 import com.ishttt.diwali.diyas.DiyaManager;
 import com.ishttt.diwali.gifts.GiftBoxManager;
 import com.ishttt.diwali.items.ItemManager;
@@ -29,6 +31,8 @@ public class DiwaliPlugin extends JavaPlugin {
     private DiyaManager diyaManager;
     private CrackerManager crackerManager;
     private GiftBoxManager giftBoxManager;
+    private ToranManager toranManager;
+    private KandilManager kandilManager;
     private DiwaliShopGUI shopGUI;
 
     public static DiwaliPlugin getInstance() {
@@ -51,6 +55,8 @@ public class DiwaliPlugin extends JavaPlugin {
         this.diyaManager = new DiyaManager(this);
         this.crackerManager = new CrackerManager(this);
         this.giftBoxManager = new GiftBoxManager(this);
+        this.toranManager = new ToranManager(this);
+        this.kandilManager = new KandilManager(this);
         this.shopGUI = new DiwaliShopGUI(this);
 
         // Register event listeners
@@ -128,6 +134,14 @@ public class DiwaliPlugin extends JavaPlugin {
 
     public GiftBoxManager getGiftBoxManager() {
         return giftBoxManager;
+    }
+
+    public ToranManager getToranManager() {
+        return toranManager;
+    }
+
+    public KandilManager getKandilManager() {
+        return kandilManager;
     }
 
     public DiwaliShopGUI getShopGUI() {

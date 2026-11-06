@@ -6,6 +6,7 @@ import com.ishttt.diwali.utils.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,7 @@ public class DiwaliBreakListener implements Listener {
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;
         Entity target = event.getEntity();
-        if (!(target instanceof ItemDisplay)) return;
+        if (!(target instanceof ItemDisplay) && !(target instanceof Interaction)) return;
 
         PersistentDataContainer pdc = target.getPersistentDataContainer();
         ItemStack held = player.getInventory().getItemInMainHand();
@@ -51,11 +52,32 @@ public class DiwaliBreakListener implements Listener {
             return;
         }
 
-        // 3. Gift Box
+        // 3. Toran (Marigold Garland)
+        if (pdc.has(plugin.getToranManager().getToranIdKey(), PersistentDataType.STRING)) {
+            event.setCancelled(true);
+            plugin.getToranManager().removeToran(target, player);
+            return;
+        }
+
+        // 4. Akash Kandil (Paper Lantern)
+        if (pdc.has(plugin.getKandilManager().getKandilIdKey(), PersistentDataType.STRING)) {
+            event.setCancelled(true);
+            plugin.getKandilManager().removeKandil(target, player);
+            return;
+        }
+
+        // 5. Firecrackers / Bombs (Left-click to break & pick up)
+        if (pdc.has(plugin.getCrackerManager().getCrackerTypeKey(), PersistentDataType.STRING)) {
+            event.setCancelled(true);
+            plugin.getCrackerManager().removeCracker(target, player);
+            return;
+        }
+
+        // 6. Gift Box
         if (pdc.has(plugin.getGiftBoxManager().getGiftIdKey(), PersistentDataType.STRING)) {
             event.setCancelled(true);
 
-            // If player is sneaking and box is unsealed or placer is reclaiming: break to pick up
+            // Sneaking breaks to collect
             if (player.isSneaking()) {
                 plugin.getGiftBoxManager().handleBreak(target, player);
                 return;
@@ -64,23 +86,8 @@ public class DiwaliBreakListener implements Listener {
             // Left-click unwraps the gift!
             boolean unwrapped = plugin.getGiftBoxManager().handleUnwrap(target, player);
             if (!unwrapped) {
-                // If not sealed yet, break and drop
                 plugin.getGiftBoxManager().handleBreak(target, player);
             }
-            return;
-        }
-
-        // 4. Firecrackers / Bombs (Left-click to break & pick up)
-        if (pdc.has(plugin.getCrackerManager().getCrackerTypeKey(), PersistentDataType.STRING)) {
-            event.setCancelled(true);
-            String typeId = pdc.get(plugin.getCrackerManager().getCrackerTypeKey(), PersistentDataType.STRING);
-            DiwaliItemType crackerType = DiwaliItemType.fromId(typeId);
-            if (crackerType != null) {
-                target.getWorld().dropItemNaturally(target.getLocation(), plugin.getItemManager().createItem(crackerType, 1));
-                target.getWorld().playSound(target.getLocation(), Sound.BLOCK_STONE_BREAK, 1.0f, 1.0f);
-                player.sendMessage(ChatUtils.color("&eCollected &6" + crackerType.getDisplayName() + "&e!"));
-            }
-            target.remove();
             return;
         }
     }

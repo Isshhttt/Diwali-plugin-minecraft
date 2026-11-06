@@ -159,6 +159,18 @@ public class JhalarManager {
 
             entityIds.add(display.getUniqueId());
 
+            // Add interaction entity so Shears can snip the bulb
+            world.spawn(nodeLoc, org.bukkit.entity.Interaction.class, inter -> {
+                inter.setInteractionWidth(0.4f);
+                inter.setInteractionHeight(0.4f);
+                inter.setResponsive(true);
+
+                PersistentDataContainer pdc = inter.getPersistentDataContainer();
+                pdc.set(jhalarIdKey, PersistentDataType.STRING, wireId);
+                pdc.set(jhalarTypeKey, PersistentDataType.STRING, type.getId());
+                entityIds.add(inter.getUniqueId());
+            });
+
             // Place real Light block every 3 nodes if air
             if (i % 3 == 0) {
                 Block block = nodeLoc.getBlock();

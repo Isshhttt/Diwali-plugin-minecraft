@@ -112,6 +112,17 @@ public class DiyaManager {
             pdc.set(diyaLitKey, PersistentDataType.BYTE, (byte) 0);
         });
 
+        // Spawn physical interaction hitbox so right-click and left-click work reliably
+        world.spawn(spawnLoc.clone().add(0, 0.05, 0), org.bukkit.entity.Interaction.class, inter -> {
+            inter.setInteractionWidth(0.5f);
+            inter.setInteractionHeight(0.35f);
+            inter.setResponsive(true);
+
+            PersistentDataContainer pdc = inter.getPersistentDataContainer();
+            pdc.set(diyaIdKey, PersistentDataType.STRING, id);
+            pdc.set(diyaTypeKey, PersistentDataType.STRING, type.getId());
+        });
+
         DiyaData data = new DiyaData(id, display.getUniqueId(), spawnLoc, false, false, 0, type);
         activeDiyas.put(id, data);
         saveDiya(data);
@@ -198,6 +209,17 @@ public class DiyaManager {
 
             Location dropLoc = data.location;
             if (dropLoc.getWorld() != null) {
+                // Remove linked display entity if entity was the interaction hitbox
+                try {
+                    Entity disp = dropLoc.getWorld().getEntity(data.displayUuid);
+                    if (disp != null) disp.remove();
+                } catch (Exception ignored) {}
+                for (Entity nearby : dropLoc.getWorld().getNearbyEntities(dropLoc, 1.5, 1.5, 1.5)) {
+                    PersistentDataContainer npdc = nearby.getPersistentDataContainer();
+                    if (id.equals(npdc.get(diyaIdKey, PersistentDataType.STRING))) {
+                        nearby.remove();
+                    }
+                }
                 dropLoc.getWorld().dropItemNaturally(dropLoc, plugin.getItemManager().createItem(data.type, 1));
                 ChatUtils.playSound(dropLoc, Sound.BLOCK_STONE_BREAK, 1.0f, 1.2f);
             }

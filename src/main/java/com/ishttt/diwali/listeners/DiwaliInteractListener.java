@@ -9,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,9 +17,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 public class DiwaliInteractListener implements Listener {
 
@@ -70,6 +73,23 @@ public class DiwaliInteractListener implements Listener {
         Block clicked = event.getClickedBlock();
         if (clicked == null) return;
 
+        // Prevent Diwali Lighter from placing ugly fire on blocks
+        if (type == DiwaliItemType.LIGHTER) {
+            event.setCancelled(true);
+            // Check if clicking near an unignited cracker to ignite it directly
+            for (Entity nearby : clicked.getWorld().getNearbyEntities(clicked.getLocation().add(0.5, 0.5, 0.5), 1.2, 1.2, 1.2)) {
+                if (nearby.getPersistentDataContainer().has(plugin.getCrackerManager().getCrackerTypeKey(), PersistentDataType.STRING)) {
+                    plugin.getCrackerManager().igniteCracker(player, nearby, held);
+                    return;
+                }
+                if (nearby.getPersistentDataContainer().has(plugin.getDiyaManager().getDiyaIdKey(), PersistentDataType.STRING)) {
+                    plugin.getDiyaManager().handleInteract(player, nearby, held);
+                    return;
+                }
+            }
+            return;
+        }
+
         // Jhalar placement (Two-point connection)
         if (type != null && (type == DiwaliItemType.JHALAR_GOLDEN || type == DiwaliItemType.JHALAR_RGB
                 || type == DiwaliItemType.JHALAR_WHITE || type == DiwaliItemType.JHALAR_SAFFRON)) {
@@ -79,6 +99,26 @@ public class DiwaliInteractListener implements Listener {
         }
 
         Block placeBlock = clicked.getRelative(event.getBlockFace());
+
+        // Marigold Toran placement (NEVER vanilla vine!)
+        if (type == DiwaliItemType.MARIGOLD_TORAN) {
+            event.setCancelled(true);
+            plugin.getToranManager().placeToran(player, clicked.getLocation(), event.getBlockFace());
+            if (player.getGameMode() != org.bukkit.GameMode.CREATIVE) {
+                held.setAmount(held.getAmount() - 1);
+            }
+            return;
+        }
+
+        // Akash Kandil placement (NEVER vanilla lantern!)
+        if (type == DiwaliItemType.AKASH_KANDIL) {
+            event.setCancelled(true);
+            plugin.getKandilManager().placeKandil(player, placeBlock.getLocation());
+            if (player.getGameMode() != org.bukkit.GameMode.CREATIVE) {
+                held.setAmount(held.getAmount() - 1);
+            }
+            return;
+        }
 
         // Diya placement
         if (type == DiwaliItemType.CLAY_DIYA) {
@@ -112,24 +152,30 @@ public class DiwaliInteractListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onEntityInteract(PlayerInteractAtEntityEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) return;
+    public void onEntityInteractAt(PlayerInteractAtEntityEvent event) {
+        handleEntityInteraction(event.getPlayer(), event.getRightClicked(), event);
+    }
 
-        Entity entity = event.getRightClicked();
-        if (!(entity instanceof ItemDisplay)) return;
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onEntityInteract(PlayerInteractEntityEvent event) {
+        handleEntityInteraction(event.getPlayer(), event.getRightClicked(), event);
+    }
 
-        Player player = event.getPlayer();
+    private void handleEntityInteraction(Player player, Entity entity, org.bukkit.event.Cancellable event) {
+        if (!(entity instanceof ItemDisplay) && !(entity instanceof Interaction)) return;
+
         ItemStack held = player.getInventory().getItemInMainHand();
+        var pdc = entity.getPersistentDataContainer();
 
-        // Check if clicked entity is a Diya
-        if (entity.getPersistentDataContainer().has(plugin.getDiyaManager().getDiyaIdKey(), org.bukkit.persistence.PersistentDataType.STRING)) {
+        // 1. Diya interaction (fuel with ghee or light with lighter)
+        if (pdc.has(plugin.getDiyaManager().getDiyaIdKey(), PersistentDataType.STRING)) {
             event.setCancelled(true);
             plugin.getDiyaManager().handleInteract(player, entity, held);
             return;
         }
 
-        // Check if clicked entity is a Cracker (ignite with lighter)
-        if (entity.getPersistentDataContainer().has(plugin.getCrackerManager().getCrackerTypeKey(), org.bukkit.persistence.PersistentDataType.STRING)) {
+        // 2. Cracker interaction (ignite with lighter)
+        if (pdc.has(plugin.getCrackerManager().getCrackerTypeKey(), PersistentDataType.STRING)) {
             event.setCancelled(true);
             if (plugin.getItemManager().isDiwaliItem(held, DiwaliItemType.LIGHTER) || held.getType() == Material.FLINT_AND_STEEL) {
                 plugin.getCrackerManager().igniteCracker(player, entity, held);
@@ -139,8 +185,8 @@ public class DiwaliInteractListener implements Listener {
             return;
         }
 
-        // Check if clicked entity is a Gift Box (pack gifts)
-        if (entity.getPersistentDataContainer().has(plugin.getGiftBoxManager().getGiftIdKey(), org.bukkit.persistence.PersistentDataType.STRING)) {
+        // 3. Gift Box interaction (pack gifts)
+        if (pdc.has(plugin.getGiftBoxManager().getGiftIdKey(), PersistentDataType.STRING)) {
             event.setCancelled(true);
             plugin.getGiftBoxManager().openPackingGUI(player, entity);
             return;

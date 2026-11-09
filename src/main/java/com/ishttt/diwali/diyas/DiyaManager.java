@@ -228,6 +228,35 @@ public class DiyaManager {
         return false;
     }
 
+    public int clearAllDiyas() {
+        int count = 0;
+        for (DiyaData data : new ArrayList<>(activeDiyas.values())) {
+            updateDiyaLight(data, false);
+            World world = data.location.getWorld();
+            if (world != null) {
+                try {
+                    Entity disp = world.getEntity(data.displayUuid);
+                    if (disp != null) disp.remove();
+                } catch (Exception ignored) {}
+                for (Entity nearby : world.getNearbyEntities(data.location, 1.5, 1.5, 1.5)) {
+                    PersistentDataContainer npdc = nearby.getPersistentDataContainer();
+                    if (data.id.equals(npdc.get(diyaIdKey, PersistentDataType.STRING))) {
+                        nearby.remove();
+                    }
+                }
+            }
+            count++;
+        }
+        activeDiyas.clear();
+        if (storage != null) {
+            storage.set("diyas", null);
+            try {
+                storage.save(storageFile);
+            } catch (IOException ignored) {}
+        }
+        return count;
+    }
+
     public void launchSkyLantern(Player player, Location loc) {
         World world = loc.getWorld();
         if (world == null) return;

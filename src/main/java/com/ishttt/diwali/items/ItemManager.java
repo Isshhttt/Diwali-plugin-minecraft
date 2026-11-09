@@ -99,6 +99,22 @@ public class ItemManager {
         return getDiwaliType(item) == type;
     }
 
+    public boolean isAnyDiwaliItem(ItemStack item) {
+        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return false;
+        if (getDiwaliType(item) != null) return true;
+        ItemMeta meta = item.getItemMeta();
+        for (NamespacedKey key : meta.getPersistentDataContainer().getKeys()) {
+            if (key.getNamespace().equalsIgnoreCase("diwali") || key.getNamespace().equalsIgnoreCase(plugin.getName())) {
+                return true;
+            }
+        }
+        if (meta.hasCustomModelData()) {
+            int cmd = meta.getCustomModelData();
+            if (cmd >= 1000 && cmd <= 1070) return true;
+        }
+        return false;
+    }
+
     private void registerRecipes() {
         registerGheeRecipe();
         registerLighterRecipe();

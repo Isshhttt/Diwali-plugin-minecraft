@@ -47,6 +47,16 @@ public class DiwaliCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        // /diwali clear or /diwali cleanup or /diwali purge
+        if (sub.equals("clear") || sub.equals("cleanup") || sub.equals("purge")) {
+            if (!sender.hasPermission("diwali.admin")) {
+                sender.sendMessage(plugin.getConfigManager().getMessage("general.no-permission"));
+                return true;
+            }
+            plugin.getPurgeManager().executePurge(sender);
+            return true;
+        }
+
         // /diwali reload
         if (sub.equals("reload")) {
             if (!sender.hasPermission("diwali.admin")) {
@@ -106,6 +116,8 @@ public class DiwaliCommand implements CommandExecutor, TabCompleter {
         if (sender.hasPermission("diwali.admin")) {
             sender.sendMessage(ChatUtils.color(" &e/diwali give <player> <item> [amount] &7- Give festival items"));
             sender.sendMessage(ChatUtils.color(" &e/diwali reload &7- Reload plugin configuration"));
+            sender.sendMessage(ChatUtils.color(" &e/diwali clear &7- Purge all placed festival items & players' festival inventory"));
+            sender.sendMessage(ChatUtils.color(" &e/clear diwali &7- Alias for complete festival cleanup"));
         }
         sender.sendMessage(ChatUtils.color("&6&m--------------------------------------------------"));
     }
@@ -118,6 +130,8 @@ public class DiwaliCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("diwali.admin")) {
                 subs.add("give");
                 subs.add("reload");
+                subs.add("clear");
+                subs.add("cleanup");
             }
             return filter(subs, args[0]);
         }

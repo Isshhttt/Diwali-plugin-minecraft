@@ -235,10 +235,27 @@ public class JhalarManager {
             for (Location loc : lightLocs) {
                 Block block = loc.getBlock();
                 if (block.getType() == Material.LIGHT) {
-                    block.setType(Material.AIR);
+                    block.setType(Material.AIR, false);
                 }
             }
         }
+    }
+
+    public int clearAllWires() {
+        int count = 0;
+        for (String wireId : new ArrayList<>(wireEntities.keySet())) {
+            removeWire(wireId);
+            count++;
+        }
+        wireEntities.clear();
+        wireLightBlocks.clear();
+        if (storage != null) {
+            storage.set("wires", null);
+            try {
+                storage.save(storageFile);
+            } catch (IOException ignored) {}
+        }
+        return count;
     }
 
     private void saveWire(String wireId, Location a, Location b, DiwaliItemType type) {

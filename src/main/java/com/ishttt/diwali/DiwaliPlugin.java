@@ -1,5 +1,6 @@
 package com.ishttt.diwali;
 
+import com.ishttt.diwali.cleanup.PurgeManager;
 import com.ishttt.diwali.commands.DiwaliCommand;
 import com.ishttt.diwali.config.ConfigManager;
 import com.ishttt.diwali.crackers.CrackerManager;
@@ -11,6 +12,7 @@ import com.ishttt.diwali.gifts.GiftBoxManager;
 import com.ishttt.diwali.items.ItemManager;
 import com.ishttt.diwali.lights.JhalarManager;
 import com.ishttt.diwali.listeners.DiwaliBreakListener;
+import com.ishttt.diwali.listeners.DiwaliCommandListener;
 import com.ishttt.diwali.listeners.DiwaliInteractListener;
 import com.ishttt.diwali.listeners.DiwaliJoinListener;
 import com.ishttt.diwali.shop.DiwaliShopGUI;
@@ -34,6 +36,7 @@ public class DiwaliPlugin extends JavaPlugin {
     private ToranManager toranManager;
     private KandilManager kandilManager;
     private DiwaliShopGUI shopGUI;
+    private PurgeManager purgeManager;
 
     public static DiwaliPlugin getInstance() {
         return instance;
@@ -58,6 +61,7 @@ public class DiwaliPlugin extends JavaPlugin {
         this.toranManager = new ToranManager(this);
         this.kandilManager = new KandilManager(this);
         this.shopGUI = new DiwaliShopGUI(this);
+        this.purgeManager = new PurgeManager(this);
 
         // Register event listeners
         var pm = getServer().getPluginManager();
@@ -65,6 +69,7 @@ public class DiwaliPlugin extends JavaPlugin {
         pm.registerEvents(new DiwaliBreakListener(this), this);
         pm.registerEvents(new DiwaliJoinListener(this), this);
         pm.registerEvents(new PhuljhadiListener(this), this);
+        pm.registerEvents(new DiwaliCommandListener(this), this);
         pm.registerEvents(giftBoxManager, this);
         pm.registerEvents(shopGUI, this);
         pm.registerEvents(new MithaiListener(this), this);
@@ -75,6 +80,18 @@ public class DiwaliPlugin extends JavaPlugin {
             DiwaliCommand executor = new DiwaliCommand(this);
             cmd.setExecutor(executor);
             cmd.setTabCompleter(executor);
+        }
+
+        var clearCmd = getCommand("cleardiwali");
+        if (clearCmd != null) {
+            clearCmd.setExecutor((sender, c, label, args) -> {
+                if (!sender.hasPermission("diwali.admin")) {
+                    sender.sendMessage(configManager.getMessage("general.no-permission"));
+                    return true;
+                }
+                purgeManager.executePurge(sender);
+                return true;
+            });
         }
 
         getLogger().info("==================================================");
@@ -146,5 +163,9 @@ public class DiwaliPlugin extends JavaPlugin {
 
     public DiwaliShopGUI getShopGUI() {
         return shopGUI;
+    }
+
+    public PurgeManager getPurgeManager() {
+        return purgeManager;
     }
 }

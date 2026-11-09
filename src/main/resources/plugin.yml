@@ -10,7 +10,12 @@ commands:
     description: Main command for Diwali plugin
     aliases: [deepavali, festival]
     permission: diwali.use
-    usage: /diwali <shop|give|reload>
+    usage: /diwali <shop|give|reload|clear>
+  cleardiwali:
+    description: Instant cleanup and purge of all placed Diwali items, lights, entities and player inventory
+    aliases: [diwaliclear, purgediwali]
+    permission: diwali.admin
+    usage: /cleardiwali
 
 permissions:
   diwali.use:
@@ -20,5 +25,5 @@ permissions:
     description: Allows opening the Diwali festival shop
     default: true
   diwali.admin:
-    description: Allows access to administrative Diwali commands (give, reload)
+    description: Allows access to administrative Diwali commands (give, reload, clear)
     default: op
